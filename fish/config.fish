@@ -1,6 +1,8 @@
 if status is-interactive
   alias src 'source ~/.config/fish/config.fish && tmux source-file ~/.config/tmux/tmux.conf'
 
+  alias gcf 'git add nvim tmux alacritty i3 fish scripts'
+
   alias gs 'git status'
 
   bind \ef 'source ~/.config/scripts/tmux-sessionizer.fish'
@@ -8,6 +10,8 @@ if status is-interactive
   bind \e- 'nvim .'
 
   bind \eb 'tmux_start' 
+
+
 end
 
 function tmux_start
