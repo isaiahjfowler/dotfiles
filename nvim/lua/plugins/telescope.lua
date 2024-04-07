@@ -5,6 +5,7 @@ return {
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("telescope").setup({
+
 				extensions = {
 
 					["ui-select"] = {
@@ -32,8 +33,15 @@ return {
 			})
 			-- To get telescope-file-browser loaded and working with telescope,
 			-- you need to call load_extension, somewhere after setup function:
+			require("telescope").load_extension("file_browser")
+
 			require("telescope").load_extension("ui-select")
 		end,
 	},
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+	},
+
 	{ "nvim-telescope/telescope-ui-select.nvim" },
 }
