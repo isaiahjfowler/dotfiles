@@ -3,8 +3,6 @@ local opts = { noremap = true, silent = true }
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
 
-
-
 --Remap space as leader key
 keymap("", "<Space>", "<Nop>", opts)
 vim.g.mapleader = " "
@@ -19,11 +17,26 @@ vim.g.maplocalleader = " "
 --   command_mode = "c",
 --
 --
+--
 
-keymap('n', 'f', ':HopWord<CR>', {noremap = true})
-keymap('n', 't', ':HopChar1MW<CR>', {noremap = true})
+-- Notes --
+keymap("n", "<leader>nr", ":Neorg return<CR>", {noremap = true})
 
-keymap('n', '<M-f>', ':term fish ~/.config/scripts/tmux-sessionizer.fish<CR>i', opts)
+keymap("n", "<leader>nn", "", {
+	noremap = true,
+	callback = function()
+		local session_name = vim.fn.system("tmux display-message -p '#S'")
+		-- Trim any whitespace or newline characters from the session name
+		session_name = vim.fn.trim(session_name)
+		-- Execute the Neorg workspace command with the session name
+		vim.cmd("Neorg workspace " .. session_name)
+	end,
+})
+
+-- keymap("n", "f", ":HopWord<CR>", { noremap = true })
+-- keymap("n", "t", ":HopChar1MW<CR>", { noremap = true })
+
+keymap("n", "<M-f>", "<cmd>silent !tmux neww ~/.config/scripts/tmux-sessionizer.fish<CR>", opts)
 
 -- Normal --
 -- Better window navigation
@@ -34,7 +47,6 @@ keymap("n", "<C-j>", "<C-w>j", opts)
 keymap("n", "<C-k>", "<C-w>k", opts)
 keymap("n", "<C-l>", "<C-w>l", opts)
 keymap("n", "<C-x", "<C-w>q", opts)
-
 
 -- Resize with arrows
 keymap("n", "<C-Up>", ":resize +2<CR>", opts)
@@ -66,22 +78,20 @@ keymap("x", "K", ":move '<-2<CR>gv-gv", opts)
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv", opts)
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv", opts)
 
-
 -- Telescope --
-keymap('n', '<M-p>', ":Telescope find_files<CR>", opts)
-keymap('n', '<leader>fg', ":Telescope live_grep<CR>",  opts)
-keymap('n', '<leader>fb',  ":Telescope Buffers<CR>",   opts)
-keymap('n', '<leader>fh', ":Telescope live_tags<CR>",  opts)
-keymap("n", '<leader>fb', ":Telescope file_browser path=%:p:h select_buffer=true<CR>", opts)
+keymap("n", "<M-p>", ":Telescope find_files<CR>", opts)
+keymap("n", "<leader>fg", ":Telescope live_grep<CR>", opts)
+keymap("n", "<leader>fb", ":Telescope Buffers<CR>", opts)
+keymap("n", "<leader>fh", ":Telescope live_tags<CR>", opts)
+keymap("n", "<leader>fb", ":Telescope file_browser path=%:p:h select_buffer=true<CR>", opts)
 
-
--- Harpoon -- 
-keymap("n", '<A-`>', ':lua require("harpoon.ui").toggle_quick_menu()<CR>', opts)
-keymap("n", '<A-m>', ':lua require("harpoon.mark").add_file()<CR>', opts)
+-- Harpoon --
+keymap("n", "<A-`>", ':lua require("harpoon.ui").toggle_quick_menu()<CR>', opts)
+keymap("n", "<A-m>", ':lua require("harpoon.mark").add_file()<CR>', opts)
 
 for i = 1, 9 do
-   keymap("n", string.format('<A-%d>', i), string.format(':lua require("harpoon.ui").nav_file(%d)<CR>', i), opts)
+	keymap("n", string.format("<A-%d>", i), string.format(':lua require("harpoon.ui").nav_file(%d)<CR>', i), opts)
 end
 
--- Oil -- 
+-- Oil --
 keymap("n", "-", "<CMD>Oil<CR>", opts)
